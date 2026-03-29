@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/Button";
 import {
   Card,
@@ -9,6 +9,7 @@ import {
 } from "../components/ui/Card";
 import { Badge } from "../components/ui/Badge";
 import { Input } from "../components/ui/Input";
+import { ConfirmModal } from "../components/ui/ConfirmModal";
 import usePostStore from "../store/usePostStore";
 import { formatDate } from "../utils/markdown";
 import {
@@ -26,6 +27,7 @@ export function PostsPage() {
   const navigate = useNavigate();
   const { posts, deletePost, togglePostStatus } = usePostStore();
   const [searchQuery, setSearchQuery] = useState("");
+  const [postToDelete, setPostToDelete] = useState(null);
 
   const filteredPosts = posts.filter((post) => {
     if (!searchQuery) return true;
@@ -37,17 +39,22 @@ export function PostsPage() {
     );
   });
 
-  const handleDelete = (id, title) => {
-    if (window.confirm(`Are you sure you want to delete "${title}"?`)) {
-      deletePost(id);
+  const handleDeleteRequest = (id, title) => {
+    setPostToDelete({ id, title });
+  };
+
+  const handleConfirmDelete = () => {
+    if (postToDelete) {
+      deletePost(postToDelete.id);
+      setPostToDelete(null);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen bg-sky-50/40 dark:bg-slate-950">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
-        <div className="px-4 lg:px-8 py-4">
+      <div className="bg-white/95 dark:bg-slate-900/95 border-b border-sky-100 dark:border-slate-700">
+        <div className="pl-16 pr-4 sm:px-4 lg:px-8 py-3">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -57,16 +64,19 @@ export function PostsPage() {
                 Manage and view all your saved posts
               </p>
             </div>
-            <Button onClick={() => navigate("/editor")}>
-              <Plus className="w-4 h-4 mr-2" />
-              New Post
-            </Button>
           </div>
         </div>
       </div>
 
       {/* Content */}
       <div className="p-4 lg:p-8">
+        <div className="mb-4 flex justify-end lg:justify-start">
+          <Button size="sm" onClick={() => navigate("/editor")}>
+            <Plus className="w-4 h-4 mr-2" />
+            New Post
+          </Button>
+        </div>
+
         {/* Search */}
         <div className="mb-6">
           <div className="relative max-w-md">
@@ -193,7 +203,7 @@ export function PostsPage() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleDelete(post.id, post.title)}
+                      onClick={() => handleDeleteRequest(post.id, post.title)}
                       className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -205,6 +215,20 @@ export function PostsPage() {
           </div>
         )}
       </div>
+
+      <ConfirmModal
+        open={Boolean(postToDelete)}
+        title="Delete Post"
+        description={
+          postToDelete
+            ? `Delete "${postToDelete.title}" permanently? This action cannot be undone.`
+            : ""
+        }
+        confirmText="Delete"
+        destructive
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setPostToDelete(null)}
+      />
     </div>
   );
 }

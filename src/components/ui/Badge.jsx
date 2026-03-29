@@ -8,7 +8,7 @@ const Badge = React.forwardRef(
     ref,
   ) => {
     const variants = {
-      default: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+      default: "bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-200",
       secondary:
         "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200",
       success:

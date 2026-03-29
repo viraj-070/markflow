@@ -79,39 +79,53 @@ export function EditorPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen bg-sky-50/40 dark:bg-slate-950">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm">
-        <div className="px-4 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                {id ? "Edit Post" : "Create New Post"}
-              </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Create and manage your content with live preview
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <Button variant="outline" onClick={handleExport}>
-                <Download className="w-4 h-4 mr-2" />
-                Export JSON
-              </Button>
-              <Button variant="outline" onClick={handleCancel}>
-                <X className="w-4 h-4 mr-2" />
-                Cancel
-              </Button>
-              <Button onClick={handleSubmit(onSubmit)} disabled={isSaving}>
-                <Save className="w-4 h-4 mr-2" />
-                {isSaving ? "Saving..." : "Publish Post"}
-              </Button>
-            </div>
+      <div className="bg-white/95 dark:bg-slate-900/95 border-b border-sky-100 dark:border-slate-700">
+        <div className="pl-16 pr-4 sm:px-4 lg:px-8 py-3">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              {id ? "Edit Post" : "Create New Post"}
+            </h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              Create and manage your content with live preview
+            </p>
           </div>
         </div>
       </div>
 
       {/* Content */}
       <div className="p-4 lg:p-8">
+        <div className="mb-4 flex flex-wrap items-center justify-end gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleExport}
+            className="flex-1 sm:flex-none"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Export JSON
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleCancel}
+            className="flex-1 sm:flex-none"
+          >
+            <X className="w-4 h-4 mr-2" />
+            Cancel
+          </Button>
+          <Button
+            size="sm"
+            onClick={handleSubmit(onSubmit)}
+            disabled={isSaving}
+            className="w-full sm:w-auto"
+          >
+            <Save className="w-4 h-4 mr-2" />
+            {isSaving ? "Saving..." : "Publish Post"}
+          </Button>
+        </div>
+
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
           {/* Left: Form */}
           <Card className="p-6 overflow-hidden">
@@ -221,8 +235,8 @@ export function EditorPage() {
           </Card>
 
           {/* Right: Preview */}
-          <div className="xl:sticky xl:top-24 xl:h-[calc(100vh-120px)]">
-            <MarkdownPreview post={formData} className="h-full" />
+          <div>
+            <MarkdownPreview post={formData} />
           </div>
         </div>
       </div>

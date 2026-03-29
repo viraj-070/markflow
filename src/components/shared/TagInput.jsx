@@ -1,7 +1,5 @@
 import React, { useState, useRef } from "react";
 import { cn } from "../../lib/utils";
-import { Input } from "../ui/Input";
-import { Badge } from "../ui/Badge";
 import { X } from "lucide-react";
 
 export function TagInput({
@@ -37,13 +35,16 @@ export function TagInput({
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center gap-2 p-2 min-h-[42px] rounded-lg border border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-800 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent",
+        "flex flex-wrap items-center gap-2 p-3 min-h-[44px] rounded-lg border border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-800 focus-within:ring-2 focus-within:ring-sky-500 focus-within:border-transparent cursor-text",
         className,
       )}
       onClick={() => inputRef.current?.focus()}
     >
       {value.map((tag, index) => (
-        <Badge key={index} variant="default" className="gap-1">
+        <span
+          key={index}
+          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium bg-sky-500 text-white"
+        >
           {tag}
           <button
             type="button"
@@ -51,11 +52,11 @@ export function TagInput({
               e.stopPropagation();
               removeTag(index);
             }}
-            className="ml-1 rounded-full p-0.5 hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors"
+            className="ml-0.5 rounded-full p-0.5 hover:bg-sky-400 transition-colors"
           >
             <X className="h-3 w-3" />
           </button>
-        </Badge>
+        </span>
       ))}
       <input
         ref={inputRef}
@@ -65,7 +66,7 @@ export function TagInput({
         onKeyDown={handleKeyDown}
         onBlur={addTag}
         placeholder={value.length === 0 ? placeholder : ""}
-        className="flex-1 min-w-[120px] bg-transparent border-none outline-none text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-400"
+        className="flex-1 min-w-[120px] bg-transparent border-none outline-none text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
       />
     </div>
   );

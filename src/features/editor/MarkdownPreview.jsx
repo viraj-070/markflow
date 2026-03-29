@@ -5,7 +5,7 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import { cn } from "../../lib/utils";
 import { Badge } from "../../components/ui/Badge";
-import { TrendingUp, Briefcase, Clock, MapPin } from "lucide-react";
+import { TrendingUp, Briefcase, Clock } from "lucide-react";
 
 export function MarkdownPreview({ post, className }) {
   const {
@@ -20,7 +20,7 @@ export function MarkdownPreview({ post, className }) {
   return (
     <div
       className={cn(
-        "bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden",
+        "bg-white dark:bg-slate-800 rounded-2xl shadow-lg shadow-sky-100/50 dark:shadow-none overflow-hidden",
         className,
       )}
     >
@@ -36,34 +36,34 @@ export function MarkdownPreview({ post, className }) {
         </span>
       </div>
 
-      <div className="p-6 overflow-y-auto max-h-[calc(100vh-200px)]">
+      <div className="p-6">
         {/* Title */}
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
           {title || "Your Post Title"}
         </h1>
 
         {/* Overview Card */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-6 mb-6 text-white">
+        <div className="bg-gradient-to-r from-sky-500 to-cyan-500 rounded-xl p-6 mb-6 text-white">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold mb-1">Post Overview</h2>
-              <p className="text-blue-100 text-sm">
+              <p className="text-sky-100 text-sm">
                 Everything you need to know about this post
               </p>
             </div>
-            <TrendingUp className="w-8 h-8 text-blue-200" />
+            <TrendingUp className="w-8 h-8 text-sky-100" />
           </div>
 
           {/* Meta info */}
           <div className="mt-4 flex flex-wrap gap-4">
             {experience && (
-              <div className="flex items-center gap-2 text-sm text-blue-100">
+              <div className="flex items-center gap-2 text-sm text-sky-100">
                 <Clock className="w-4 h-4" />
                 <span>{experience}</span>
               </div>
             )}
             {type && (
-              <div className="flex items-center gap-2 text-sm text-blue-100">
+              <div className="flex items-center gap-2 text-sm text-sky-100">
                 <Briefcase className="w-4 h-4" />
                 <span>{type}</span>
               </div>
@@ -121,12 +121,12 @@ export function MarkdownPreview({ post, className }) {
               ),
               li: ({ children }) => (
                 <li className="text-gray-600 dark:text-gray-300 flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                  <span className="w-1.5 h-1.5 bg-sky-500 rounded-full mt-2 flex-shrink-0" />
                   <span>{children}</span>
                 </li>
               ),
               blockquote: ({ children }) => (
-                <blockquote className="border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-900/20 pl-4 py-3 my-4 italic text-gray-700 dark:text-gray-300">
+                <blockquote className="border-l-4 border-sky-500 bg-sky-50 dark:bg-sky-900/20 pl-4 py-3 my-4 italic text-gray-700 dark:text-gray-300">
                   {children}
                 </blockquote>
               ),
@@ -147,7 +147,7 @@ export function MarkdownPreview({ post, className }) {
               a: ({ href, children }) => (
                 <a
                   href={href}
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
+                  className="text-sky-600 dark:text-sky-400 hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

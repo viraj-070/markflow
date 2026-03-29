@@ -5,7 +5,7 @@ import { Sidebar } from "./Sidebar";
 export function DashboardLayout({ darkMode, setDarkMode }) {
   return (
     <div className={darkMode ? "dark" : ""}>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <div className="min-h-screen bg-sky-50/40 dark:bg-slate-950">
         <Sidebar darkMode={darkMode} setDarkMode={setDarkMode} />
         <main className="lg:pl-64">
           <div className="min-h-screen">
