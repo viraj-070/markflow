@@ -2,10 +2,16 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import { cn } from "../../lib/utils";
 import { Badge } from "../../components/ui/Badge";
 import { TrendingUp, Briefcase, Clock } from "lucide-react";
+
+// Custom sanitize schema that allows u, sub, sup, s tags
+const customSanitizeSchema = {
+  ...defaultSchema,
+  tagNames: [...(defaultSchema.tagNames || []), "u", "sub", "sup", "s", "del", "ins", "mark"],
+};
 
 export function MarkdownPreview({ post, className }) {
   const {
@@ -91,7 +97,7 @@ export function MarkdownPreview({ post, className }) {
         <div className="prose prose-gray dark:prose-invert max-w-none">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw, rehypeSanitize]}
+            rehypePlugins={[rehypeRaw, [rehypeSanitize, customSanitizeSchema]]}
             components={{
               h1: ({ children }) => (
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4 first:mt-0">
@@ -114,16 +120,13 @@ export function MarkdownPreview({ post, className }) {
                 </p>
               ),
               ul: ({ children }) => (
-                <ul className="space-y-2 my-4 ml-4">{children}</ul>
+                <ul className="list-disc list-inside space-y-1 my-4 text-gray-600 dark:text-gray-300">{children}</ul>
               ),
               ol: ({ children }) => (
-                <ol className="space-y-2 my-4 ml-4 list-decimal">{children}</ol>
+                <ol className="list-decimal list-inside space-y-1 my-4 text-gray-600 dark:text-gray-300">{children}</ol>
               ),
               li: ({ children }) => (
-                <li className="text-gray-600 dark:text-gray-300 flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 bg-sky-500 rounded-full mt-2 flex-shrink-0" />
-                  <span>{children}</span>
-                </li>
+                <li className="text-gray-600 dark:text-gray-300">{children}</li>
               ),
               blockquote: ({ children }) => (
                 <blockquote className="border-l-4 border-sky-500 bg-sky-50 dark:bg-sky-900/20 pl-4 py-3 my-4 italic text-gray-700 dark:text-gray-300">
@@ -160,6 +163,11 @@ export function MarkdownPreview({ post, className }) {
                 </strong>
               ),
               em: ({ children }) => <em className="italic">{children}</em>,
+              u: ({ children }) => <u className="underline">{children}</u>,
+              sub: ({ children }) => <sub className="text-xs">{children}</sub>,
+              sup: ({ children }) => <sup className="text-xs">{children}</sup>,
+              del: ({ children }) => <del className="line-through text-gray-500">{children}</del>,
+              s: ({ children }) => <s className="line-through text-gray-500">{children}</s>,
             }}
           >
             {content || "*Start writing to see the preview...*"}

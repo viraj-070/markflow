@@ -11,17 +11,21 @@ export function MarkdownEditor({ value, onChange, className, placeholder }) {
       const textarea = textareaRef.current;
       if (!textarea) return;
 
+      // Store scroll position
+      const scrollTop = textarea.scrollTop;
+      
       const result = applyMarkdownFormat(textarea, action);
       onChange(result.text);
 
-      // Restore focus and cursor position
-      setTimeout(() => {
-        textarea.focus();
+      // Restore focus, cursor position, and scroll position
+      requestAnimationFrame(() => {
+        textarea.focus({ preventScroll: true });
         textarea.setSelectionRange(
           result.cursorPosition,
           result.cursorPosition,
         );
-      }, 0);
+        textarea.scrollTop = scrollTop;
+      });
     },
     [onChange],
   );

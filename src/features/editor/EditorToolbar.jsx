@@ -1,6 +1,5 @@
 import React from "react";
 import { cn } from "../../lib/utils";
-import { Button } from "../../components/ui/Button";
 import { toolbarActions } from "../../utils/markdown";
 import {
   Bold,
@@ -18,8 +17,6 @@ import {
   Heading3,
   Subscript,
   Superscript,
-  Undo,
-  Redo,
 } from "lucide-react";
 
 const iconMap = {
@@ -50,6 +47,13 @@ export function EditorToolbar({ onAction, className }) {
     ["subscript", "superscript"],
   ];
 
+  const handleMouseDown = (e, action) => {
+    // Prevent focus loss from textarea and page scroll
+    e.preventDefault();
+    e.stopPropagation();
+    onAction(action);
+  };
+
   return (
     <div
       className={cn(
@@ -67,13 +71,11 @@ export function EditorToolbar({ onAction, className }) {
             if (!action) return null;
             const Icon = iconMap[action.icon];
             return (
-              <Button
+              <button
                 key={action.id}
                 type="button"
-                variant="ghost"
-                size="sm"
-                className="h-8 w-8 p-0"
-                onClick={() => onAction(action)}
+                className="h-8 w-8 p-0 inline-flex items-center justify-center rounded-lg font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+                onMouseDown={(e) => handleMouseDown(e, action)}
                 title={action.label}
               >
                 {Icon ? (
@@ -81,7 +83,7 @@ export function EditorToolbar({ onAction, className }) {
                 ) : (
                   <span className="text-xs font-semibold">{action.label}</span>
                 )}
-              </Button>
+              </button>
             );
           })}
         </React.Fragment>

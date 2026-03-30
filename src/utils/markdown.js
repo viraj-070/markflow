@@ -161,13 +161,33 @@ export const toolbarActions = [
  */
 export function applyMarkdownFormat(textarea, action) {
   const { selectionStart, selectionEnd, value } = textarea;
-  const selectedText = value.substring(selectionStart, selectionEnd);
+  let selectedText = value.substring(selectionStart, selectionEnd);
 
   let prefix = action.prefix.replace(/\\n/g, "\n");
   let suffix = action.suffix.replace(/\\n/g, "\n");
 
   let newText;
   let newCursorPos;
+
+  // For inline formatting, trim the selected text to avoid issues like "**bold **"
+  if (!action.block && selectedText) {
+    const leadingSpaces = selectedText.match(/^(\s*)/)[1];
+    const trailingSpaces = selectedText.match(/(\s*)$/)[1];
+    const trimmedText = selectedText.trim();
+    
+    if (trimmedText) {
+      const beforeSelection = value.substring(0, selectionStart);
+      const afterSelection = value.substring(selectionEnd);
+      
+      newText = beforeSelection + leadingSpaces + prefix + trimmedText + suffix + trailingSpaces + afterSelection;
+      newCursorPos = selectionStart + leadingSpaces.length + prefix.length + trimmedText.length + suffix.length + trailingSpaces.length;
+      
+      return {
+        text: newText,
+        cursorPosition: newCursorPos,
+      };
+    }
+  }
 
   if (action.block && selectionStart === selectionEnd) {
     const beforeCursor = value.substring(0, selectionStart);
