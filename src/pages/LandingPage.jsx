@@ -205,7 +205,7 @@ export function LandingPage({ darkMode, setDarkMode }) {
             </div>
             <code className="text-sm text-gray-300 font-mono">
               <span className="text-gray-500">$</span> git clone
-              https://github.com/yourname/markflow.git
+              https://github.com/viraj-070/markflow
               <br />
               <span className="text-gray-500">$</span> cd markflow
               <br />
